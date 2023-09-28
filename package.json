@@ -1,0 +1,28 @@
+{
+  "name": "synwave",
+  "version": "1.0.1",
+  "description": "SynWave API Client Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpi4gx/synwave-npm.git"
+  },
+  "keywords": [
+    "data",
+    "storage",
+    "remote"
+  ],
+  "author": "rpi4gx@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpi4gx/synwave-npm/issues"
+  },
+  "homepage": "https://synwave.io",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "form-data": "^4.0.0"
+  }
+}
