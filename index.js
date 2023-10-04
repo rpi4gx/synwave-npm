@@ -14,21 +14,6 @@ var defaultOptions = {
     params: {}
 }
 
-const contentType = {
-    BINARY: "binary",
-    HTML: "html",
-    JPEG: "jpeg",
-    PNG: "png",
-    MPEG: "mpeg",
-    MP4: "mp4",
-    MARKDOWN: "markdown",
-    JSON: "json",
-    TEXT: "text",
-    PDF: "pdf",
-    XML: "xml",
-    JAVASCRIPT: "javascript"
-}
-
 function getOptions(method, url, key) {
     if (key === undefined && process.env[apiKeyName] && process.env[apiKeyName].length > 0) {
         key = process.env[apiKeyName]
@@ -45,13 +30,13 @@ function getOptions(method, url, key) {
     return options
 }
 
-function uploadFile(fileLocation, fileType, synwaveParameters) {
+function uploadFile(fileLocation, synwaveParameters) {
     return new Promise((resolve, reject) => {
         try {
             const fileStream = fs.createReadStream(fileLocation)
             const formd = new FormData()
             formd.append('file', fileStream) 
-            let options = getOptions('POST', `https://synwave.p.rapidapi.com/v1/upload/${fileType}`)
+            let options = getOptions('POST', `https://synwave.p.rapidapi.com/v1/upload`)
             options.params = synwaveParameters
             options.data = formd
             options.headers = {
@@ -71,4 +56,3 @@ function uploadFile(fileLocation, fileType, synwaveParameters) {
 
 
 exports.uploadFile = uploadFile;
-exports.contentType = contentType;

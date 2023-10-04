@@ -31,10 +31,10 @@ const synwaveOptions = {
 
 (async function main() {
     try {
-        let r = await synwave.uploadFile('./sample.html', synwave.contentType.HTML, synwaveOptions)
+        let r = await synwave.uploadFile('./sample.html', synwaveOptions)
         console.log('Response API')
         console.log(r)
-        console.log(`File published at ${r.url.address}`)
+        console.log(`File published at ${r.file.address}`)
     } catch (e) {
         console.warn(e)
     }
@@ -49,36 +49,24 @@ $ SYNWAVE_KEY=YOUR_API_KEY_HERE node main.js
 Response API
 {
   success: true,
-  url: {
-    id: 'N4yTAZezz3ePrYDdC7vjB5AC6JlcwrqDjHR9xh3NI6lOW5eqfGCCyQNaeVOOkyjq',
-    address: 'https://synwave.io/t/N4yTAZezz3ePrYDdC7vjB5AC6JlcwrqDjHR9xh3NI6lOW5eqfGCCyQNaeVOOkyjq',
-    expiration_time: '2023-09-28T19:09:12.000Z',
-    downloads_remaining: 15,
-    authentication: { username: 'my_username', password: 'my_secret_password' }
+  file: {
+    id: 'KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h',
+    address: 'https://synwave.io/t/KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h',
+    size_bytes: 18,
+    created_at: '2023-10-04T21:02:50.319Z',
+    mimetype: 'text/html',
+    filename: 'sample.html',
+    expiration_time: '2023-10-04T22:02:50.000Z'
   }
 }
-File published at https://synwave.io/t/N4yTAZezz3ePrYDdC7vjB5AC6JlcwrqDjHR9xh3NI6lOW5eqfGCCyQNaeVOOkyjq
+File published at https://synwave.io/t/KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h
 ```
 
 ### Library functions
 
-* uploadFile(fileLocation, fileType, synwaveOptions) - Uploads a new file. 
+* uploadFile(fileLocation, synwaveOptions) - Uploads a new file. 
 
     *fileLocation*: Path of local file to upload.
-
-    *fileType*: It can be any of the following types to indicate the type of the file to upload.
-    * synwave.contentType.BINARY
-    * synwave.contentType.HTML
-    * synwave.contentType.JPEG
-    * synwave.contentType.PNG
-    * synwave.contentType.MPEG
-    * synwave.contentType.MP4
-    * synwave.contentType.MARKDOWN
-    * synwave.contentType.JSON
-    * synwave.contentType.TEXT
-    * synwave.contentType.PDF
-    * synwave.contentType.XML
-    * synwave.contentType.JAVASCRIPT
 
     *synwaveOptions*: An object with the following keys:
 
