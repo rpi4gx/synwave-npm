@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const { AxiosError } = require('axios');
 const synwave = require('./main');
 
 function usage() {
@@ -31,38 +32,80 @@ function usage() {
 }
 
 (async () => {
+    let exitCode = 0
     const operation = process.argv[2]
+    const debugging = process.argv.some(e => e == "--debug")
     switch (operation) {
         case "upload":
             {
                 const file = process.argv[3]
                 if (file) {
-                    console.log(`uploading file ${file} ....`)
+                    if (debugging) {
+                        console.log(`Uploading file ${file} ....`)
+                    }
                     let r = await synwave.uploadFile(file, {})
-                    console.log(r)
-                    if (r && r.success === true) {
-                        console.log(r.file.address)
+                    if (debugging) {
+                        console.log('API response:')
+                        console.log(JSON.stringify(r, null, 2))
+                    }
+                    if (r.success === true) {
+                        console.log(`${r.file.address}`)
+                    } else {
+                        console.warn(`error: ${r.message}`)
+                        exitCode = -1
                     }
                 }
             }
             break;
         case "list":
             {
-                let r = await synwave.listStoredFiles()
-                console.log(JSON.stringify(r))
+                let pageNumber = 0
+                let pageSize = 50
+                let r = await synwave.listStoredFiles(pageNumber, pageSize)
+                if (debugging) {
+                    console.log('API response:')
+                    console.log(JSON.stringify(r, null, 2))
+                }
+                if (r.success === true) {
+                    let files = r.response.files
+                    console.table(files)
+                } else {
+                    console.warn(`error: ${r.message}`)
+                    exitCode = -1
+                }
             }
             break;
         case "delete":
             {
                 let fileId = process.argv[3]
                 let r = await synwave.deleteFile(fileId)
-                console.log(JSON.stringify(r))
+                if (debugging) {
+                    console.log('API response:')
+                    console.log(JSON.stringify(r, null, 2))
+                }
+                if (r.success === true) {
+                    console.log(r.message)
+                } else {
+                    console.warn(`error: ${r.message}`)
+                    exitCode = -1
+                }
             }
             break;
         case "account_info":
             {
                 let r = await synwave.getAccountInformation()
-                console.log(JSON.stringify(r))
+                if (debugging) {
+                    console.log('API response:')
+                    console.log(JSON.stringify(r, null, 2))
+                }
+                if (r.success === true) {
+                    console.log(`Total number of files stored: ${r.info.files.total}`)
+                    console.log(`Space usage:`)
+                    console.table(r.info.usage)
+                } else {
+                    console.warn(`error: ${r.message}`)
+                    exitCode = -1
+                }
             }
             break;
         case "help":
@@ -72,4 +115,5 @@ function usage() {
             usage()
             process.exit(-1)
     }
+    process.exit(exitCode)
 })()

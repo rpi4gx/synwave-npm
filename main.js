@@ -46,7 +46,11 @@ function uploadFile(fileLocation, synwaveParameters) {
             axios.request(options).then(function (response) {
             	resolve(response.data);
             }).catch(function (error) {
-            	reject(error);
+                if (error.response !== undefined && error.response.data !== undefined) {
+                    resolve(error.response.data);
+                } else {
+                    reject(error)
+                }    
             });
         } catch(e) {
             reject(e)
@@ -54,14 +58,25 @@ function uploadFile(fileLocation, synwaveParameters) {
     })
 }
 
-function listStoredFiles() {
+function listStoredFiles(pageNumber, pageSize) {
     return new Promise((resolve, reject) => {
         try {
-            let options = getAxiosOptions('GET', `https://synwave.p.rapidapi.com/v1/files`)
+            let query = ""
+            if (pageNumber !== undefined) {
+                query = `page_number=${pageNumber}`
+            }
+            if (pageSize !== undefined) {
+                query += `&page_size=${pageSize}`
+            }
+            let options = getAxiosOptions('GET', `https://synwave.p.rapidapi.com/v1/files?${query}`)
             axios.request(options).then(function (response) {
             	resolve(response.data);
             }).catch(function (error) {
-            	reject(error);
+                if (error.response !== undefined && error.response.data !== undefined) {
+                    resolve(error.response.data);
+                } else {
+                    reject(error)
+                }    
             });
         } catch(e) {
             reject(e)
@@ -76,7 +91,11 @@ function deleteFile(fileId) {
             axios.request(options).then(function (response) {
             	resolve(response.data);
             }).catch(function (error) {
-            	reject(error);
+                if (error.response !== undefined && error.response.data !== undefined) {
+                    resolve(error.response.data);
+                } else {
+                    reject(error)
+                }            	
             });
         } catch(e) {
             reject(e)
@@ -91,7 +110,11 @@ function getAccountInformation() {
             axios.request(options).then(function (response) {
             	resolve(response.data);
             }).catch(function (error) {
-            	reject(error);
+                if (error.response !== undefined && error.response.data !== undefined) {
+                    resolve(error.response.data);
+                } else {
+                    reject(error)
+                }    
             });
         } catch(e) {
             reject(e)
