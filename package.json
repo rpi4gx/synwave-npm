@@ -2,7 +2,8 @@
   "name": "synwave",
   "version": "1.0.2",
   "description": "SynWave API Client Library",
-  "main": "index.js",
+  "main": "main.js",
+  "bin": "./synwave.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
