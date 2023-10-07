@@ -31,7 +31,7 @@ function usage() {
     `)
 }
 
-(async () => {
+async function main() {
     let exitCode = 0
     const operation = process.argv[2]
     const debugging = process.argv.some(e => e == "--debug")
@@ -116,4 +116,13 @@ function usage() {
             process.exit(-1)
     }
     process.exit(exitCode)
+}
+
+(async () => {
+    try {
+        await main()
+    } catch(e){
+        console.warn(e.message)
+        process.exit(-1)
+    }
 })()

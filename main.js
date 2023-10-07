@@ -18,10 +18,9 @@ function getAxiosOptions(method, url, key) {
     if (key === undefined && process.env[apiKeyName] && process.env[apiKeyName].length > 0) {
         key = process.env[apiKeyName]
     } else {
-        throw new Error(`
-            SynWave Client Library requires a valid Rapid API Key.
-            Visit https://rapidapi.com/rpi4gx/api/synwave to get one for free.
-        `)
+        throw new Error(`${apiKeyName} environment variable missing.
+SynWave requires a valid Rapid API Key.
+Visit https://rapidapi.com/rpi4gx/api/synwave to get one for free.`)
     }
     let options = defaultOptions
     options.method = method
