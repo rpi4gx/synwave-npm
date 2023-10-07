@@ -1,4 +1,4 @@
-# Javascript client library for [SynWave API](https://synwave.io/)
+# NPM package for [SynWave API](https://synwave.io/)
 
 :warning: A valid Rapid API key is required to access SynWave API. It can be easily obtained for free on https://rapidapi.com/.
 
