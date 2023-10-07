@@ -2,7 +2,7 @@ var axios = require('axios');
 const fs = require('fs')
 const FormData = require('form-data');
 
-const apiKeyName = "SYNWAVE_KEY"
+const apiKeyName = "SYNWAVE_RAPIDAPI_KEY"
 
 var defaultOptions = {
     method: '',

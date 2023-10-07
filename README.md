@@ -1,18 +1,61 @@
-## Javascript client library for [SynWave API](https://synwave.io/)
+# Javascript client library for [SynWave API](https://synwave.io/)
 
-:warning: This library requires a valid Rapid API key to access SynWave API. A Rapid API key can easily be obtained on https://rapidapi.com/.
+:warning: A valid Rapid API key is required to access SynWave API. It can be easily obtained for free on https://rapidapi.com/.
 
-:information_source: More information about SynWave API can be found [here](https://rapidapi.com/rpi4gx/api/synwave).
+:information_source: Full specification of SynWave API available [here](https://rapidapi.com/rpi4gx/api/synwave).
 
-### Example:
+## Command line tool
+
+### Installation
+```
+$ npm install -g synwave
+```
+
+### Set environment variable
+```
+$ export SYNWAVE_RAPIDAPI_KEY=__REPLACE_WITH_RAPIDAPI_KEY__
+```
+
+### Usage:
+```
+$ synwave help
+
+    SynWave Command Line tool. https://synwave.io.
+
+    Options:
+        upload: Upload a new file into SynWave service.
+            Example: 
+                synwave upload [file]
+
+        list: List files stored on SynWave service.
+            Example: 
+                synwave list
+
+        account_info: Show a summary with account information
+            Example:
+                synwave account
+
+        delete: Delete a file store on SynWave service.
+            Example: 
+                synwave delete [file id]
+
+        help: Shows this help
+
+    Global flags:
+        --debug: Shows API responses
+    
+```
+
+## Library
+### Installation:
 
 ```
-npm install -s synwave
+$ npm install -s synwave
 ```
 
 Prepare a file to upload to Synwave API.
 ```
-cat << EOF > sample.html
+$ cat << EOF > sample.html
 <h1>hi there</h1>
 EOF
 ```
@@ -44,22 +87,24 @@ const synwaveOptions = {
 The Rapid API key needs to be set by the SYNWAVE_KEY environment variable.
 
 ```
-$ SYNWAVE_KEY=YOUR_API_KEY_HERE node main.js
+$ SYNWAVE_RAPIDAPI_KEY=__YOUR_RAPIDAPI_KEY_HERE__ node main.js
 
 Response API
 {
   success: true,
   file: {
-    id: 'KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h',
-    address: 'https://synwave.io/t/KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h',
+    id: 'iL4w5pv46jnJEe5oAdl21Jqm59pEDR1JQ0XoqYQl3SO-P_ZXP8s0KU5EhZTPHAWb',
+    address: 'https://synwave.io/t/iL4w5pv46jnJEe5oAdl21Jqm59pEDR1JQ0XoqYQl3SO-P_ZXP8s0KU5EhZTPHAWb',
     size_bytes: 18,
-    created_at: '2023-10-04T21:02:50.319Z',
+    created_at: '2023-10-07T16:03:48.351Z',
     mimetype: 'text/html',
     filename: 'sample.html',
-    expiration_time: '2023-10-04T22:02:50.000Z'
+    expiration_time: '2023-10-07T16:05:18.000Z',
+    downloads_remaining: 15,
+    authentication: { username: 'my_username', password: 'my_secret_password' }
   }
 }
-File published at https://synwave.io/t/KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCsigPOTq-OUPL5uI1RKARdh8h
+File published at https://synwave.io/t/iL4w5pv46jnJEe5oAdl21Jqm59pEDR1JQ0XoqYQl3SO-P_ZXP8s0KU5EhZTPHAWb
 ```
 
 ### Library functions
@@ -68,7 +113,7 @@ File published at https://synwave.io/t/KDhiyuEj2uLZtR2GjKe6zioMp_TXU69eBe1kiOxCs
 
     *fileLocation*: Path of local file to upload.
 
-    *synwaveOptions*: An object with the following keys:
+    *synwaveOptions*: Optional. An object with the following keys:
 
     * *download_limit*: Number of downloads before the file becomes unavailable.
     * *expiration_seconds*: Number of seconds before the file becomes unavailable.

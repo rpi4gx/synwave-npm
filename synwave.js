@@ -8,15 +8,15 @@ function usage() {
     SynWave Command Line tool. https://synwave.io.
 
     Options:
-        upload: Upload a new file into SynWave service.
+        upload: Uploads a new file into SynWave service.
             Example: 
                 synwave upload [file]
 
-        list: List files stored on SynWave service.
+        list: Lists files stored on SynWave service.
             Example: 
                 synwave list
 
-        account_info: Show a summary with account information
+        account_info: Shows a summary with account information
             Example:
                 synwave account
 
