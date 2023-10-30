@@ -1,7 +1,7 @@
 {
   "name": "synwave",
-  "version": "1.0.3",
-  "description": "SynWave API Client Library",
+  "version": "1.0.4",
+  "description": "SynWave API Client",
   "main": "main.js",
   "bin": "./synwave.js",
   "scripts": {

@@ -1,41 +1,46 @@
 var axios = require('axios');
 const fs = require('fs')
 const FormData = require('form-data');
+const store = require('./store');
 
-const apiKeyName = "SYNWAVE_RAPIDAPI_KEY"
+const baseUrl = "https://synwave.io"
 
 var defaultOptions = {
     method: '',
     url: '',
-    headers: {
-      'X-RapidAPI-Key': '',
-      'X-RapidAPI-Host': 'synwave.p.rapidapi.com'
-    },
+    headers: {},
     params: {}
 }
 
-function getAxiosOptions(method, url, key) {
-    if (key === undefined && process.env[apiKeyName] && process.env[apiKeyName].length > 0) {
-        key = process.env[apiKeyName]
-    } else {
-        throw new Error(`${apiKeyName} environment variable missing.
-SynWave requires a valid Rapid API Key.
-Visit https://rapidapi.com/rpi4gx/api/synwave to get one for free.`)
-    }
+
+function getAxiosOptions(method, url, cid) {
     let options = defaultOptions
     options.method = method
     options.url = url
-    options.headers['X-RapidAPI-Key'] = key
+    if (cid !== undefined && cid !== null) {
+        options.headers['x-synwave-cid'] = cid
+    }
     return options
+}
+
+function extractIdHeader(response) {
+    if ('x-synwave-cid' in response.headers) {
+        let cid =  response.headers['x-synwave-cid']
+        if (cid !== undefined && cid.length > 0) {
+            return cid
+        }
+    }
+    return null
 }
 
 function uploadFile(fileLocation, synwaveParameters) {
     return new Promise((resolve, reject) => {
         try {
+            let cid = store.getUserId()
             const fileStream = fs.createReadStream(fileLocation)
             const formd = new FormData()
             formd.append('file', fileStream) 
-            let options = getAxiosOptions('POST', `https://synwave.p.rapidapi.com/v1/upload`)
+            let options = getAxiosOptions('POST', `${baseUrl}/v1/upload`, cid)
             options.params = synwaveParameters
             options.data = formd
             options.headers = {
@@ -43,6 +48,8 @@ function uploadFile(fileLocation, synwaveParameters) {
                 ...formd.getHeaders()
             }
             axios.request(options).then(function (response) {
+                let cid = extractIdHeader(response)
+                store.storeUserId(cid)
             	resolve(response.data);
             }).catch(function (error) {
                 if (error.response !== undefined && error.response.data !== undefined) {
@@ -60,6 +67,7 @@ function uploadFile(fileLocation, synwaveParameters) {
 function listStoredFiles(pageNumber, pageSize) {
     return new Promise((resolve, reject) => {
         try {
+            let cid = store.getUserId()
             let query = ""
             if (pageNumber !== undefined) {
                 query = `page_number=${pageNumber}`
@@ -67,8 +75,10 @@ function listStoredFiles(pageNumber, pageSize) {
             if (pageSize !== undefined) {
                 query += `&page_size=${pageSize}`
             }
-            let options = getAxiosOptions('GET', `https://synwave.p.rapidapi.com/v1/files?${query}`)
+            let options = getAxiosOptions('GET', `${baseUrl}/v1/files?${query}`, cid)
             axios.request(options).then(function (response) {
+                let cid = extractIdHeader(response)
+                store.storeUserId(cid)
             	resolve(response.data);
             }).catch(function (error) {
                 if (error.response !== undefined && error.response.data !== undefined) {
@@ -86,7 +96,8 @@ function listStoredFiles(pageNumber, pageSize) {
 function deleteFile(fileId) {
     return new Promise((resolve, reject) => {
         try {
-            let options = getAxiosOptions('DELETE', `https://synwave.p.rapidapi.com/v1/delete/${fileId}`)
+            let cid = store.getUserId()
+            let options = getAxiosOptions('DELETE', `${baseUrl}/v1/delete/${fileId}`, cid)
             axios.request(options).then(function (response) {
             	resolve(response.data);
             }).catch(function (error) {
@@ -105,8 +116,11 @@ function deleteFile(fileId) {
 function getAccountInformation() {
     return new Promise((resolve, reject) => {
         try {
-            let options = getAxiosOptions('GET', `https://synwave.p.rapidapi.com/v1/account_info`)
+            let cid = store.getUserId()
+            let options = getAxiosOptions('GET', `${baseUrl}/v1/account_info`, cid)
             axios.request(options).then(function (response) {
+                let cid = extractIdHeader(response)
+                store.storeUserId(cid)
             	resolve(response.data);
             }).catch(function (error) {
                 if (error.response !== undefined && error.response.data !== undefined) {

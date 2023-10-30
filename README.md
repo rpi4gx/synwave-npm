@@ -1,9 +1,5 @@
 # NPM package for [SynWave API](https://synwave.io/)
 
-:warning: A valid Rapid API key is required to access SynWave API. It can be easily obtained for free on https://rapidapi.com/.
-
-:information_source: Full specification of SynWave API available [here](https://rapidapi.com/rpi4gx/api/synwave).
-
 ## Command line tool
 
 ### Installation
@@ -11,35 +7,45 @@
 $ npm install -g synwave
 ```
 
-### Set environment variable
-```
-$ export SYNWAVE_RAPIDAPI_KEY=__REPLACE_WITH_RAPIDAPI_KEY__
-```
-
 ### Usage:
 ```
 $ synwave help
 
+
     SynWave Command Line tool. https://synwave.io.
 
-    Options:
-        upload: Upload a new file into SynWave service.
-            Example: 
-                synwave upload [file]
+    Actions:
 
-        list: List files stored on SynWave service.
-            Example: 
-                synwave list
+        upload: Uploads a new file into SynWave service.
 
-        account_info: Show a summary with account information
-            Example:
-                synwave account
+            $ synwave upload filename [--expiration value] [--download_limit value] [--auth_username username --auth_password password]
+            
+            Options:
+                --expiration value: Number of seconds after the file will become unavailable.
+                --download_limit value: Number of time the file can be downloaded until it becomes unavailable.
+                --auth_username value: Username to protect this file. --auth_password is required if username is set.
+                --auth_password value: Password to protect this file. --auth_username is required if password is set.
+
+                Example: 
+                    $ synwave upload myfile.txt --expiration 3600
+
+
+        list: Lists files stored on SynWave service.
+
+            $ synwave list
+
+
+        account: Shows a summary with account information.
+
+            $ synwave account
+            
 
         delete: Delete a file store on SynWave service.
-            Example: 
-                synwave delete [file id]
+ 
+            $ synwave delete [file_id]
 
-        help: Shows this help
+
+        help: Shows this help.
 
     Global flags:
         --debug: Shows API responses
@@ -84,10 +90,8 @@ const synwaveOptions = {
 })()
 ```
 
-The Rapid API key needs to be set by the SYNWAVE_KEY environment variable.
-
 ```
-$ SYNWAVE_RAPIDAPI_KEY=__YOUR_RAPIDAPI_KEY_HERE__ node main.js
+$ node main.js
 
 Response API
 {

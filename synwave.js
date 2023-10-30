@@ -7,24 +7,38 @@ function usage() {
     console.log(`
     SynWave Command Line tool. https://synwave.io.
 
-    Options:
+    Actions:
+
         upload: Uploads a new file into SynWave service.
-            Example: 
-                synwave upload [file]
+
+            $ synwave upload filename [--expiration value] [--download_limit value] [--auth_username username --auth_password password]
+            
+            Options:
+                --expiration value: Number of seconds after the file will become unavailable.
+                --download_limit value: Number of time the file can be downloaded until it becomes unavailable.
+                --auth_username value: Username to protect this file. --auth_password is required if username is set.
+                --auth_password value: Password to protect this file. --auth_username is required if password is set.
+
+                Example: 
+                    $ synwave upload myfile.txt --expiration 3600
+
 
         list: Lists files stored on SynWave service.
-            Example: 
-                synwave list
 
-        account_info: Shows a summary with account information
-            Example:
-                synwave account
+            $ synwave list
+
+
+        account: Shows a summary with account information.
+
+            $ synwave account
+            
 
         delete: Delete a file store on SynWave service.
-            Example: 
-                synwave delete [file id]
+ 
+            $ synwave delete [file_id]
 
-        help: Shows this help
+
+        help: Shows this help.
 
     Global flags:
         --debug: Shows API responses
@@ -91,7 +105,7 @@ async function main() {
                 }
             }
             break;
-        case "account_info":
+        case "account":
             {
                 let r = await synwave.getAccountInformation()
                 if (debugging) {
